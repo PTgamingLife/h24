@@ -6,636 +6,466 @@
 <title>24HR MISSION · 人生改變計畫</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-
-:root {
-  --bg:      #0f0f23;
-  --bg2:     #1a1a3e;
-  --bg3:     #12122d;
-  --gold:    #ffd700;
-  --gold2:   #ffb300;
-  --gold3:   rgba(255,215,0,0.08);
-  --ice:     #4fc3f7;
-  --ice2:    #0288d1;
-  --text:    #f5f5f5;
-  --muted:   #6b7a99;
-  --danger:  #ff4560;
-  --success: #00e676;
-  --border:  rgba(255,215,0,0.15);
-  --border2: rgba(79,195,247,0.15);
+:root{
+  --bg:#0f0f23;--bg2:#1a1a3e;--gold:#ffd700;--gold2:#ffb300;
+  --ice:#4fc3f7;--text:#f5f5f5;--muted:#6b7a99;
+  --danger:#ff4560;--success:#00e676;
+  --border:rgba(255,215,0,0.15);--border2:rgba(79,195,247,0.15);
 }
-
 *{margin:0;padding:0;box-sizing:border-box;}
-
-body {
-  font-family:'Noto Sans TC',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  overflow-x:hidden;
-}
-
-/* ── GRID BG ── */
-body::before {
-  content:'';
-  position:fixed;inset:0;
-  background-image:
-    linear-gradient(rgba(79,195,247,0.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(79,195,247,0.025) 1px,transparent 1px);
-  background-size:50px 50px;
-  pointer-events:none;z-index:0;
-}
-
-/* ── CORNER DECO ── */
-body::after {
-  content:'';
-  position:fixed;top:0;right:0;
-  width:300px;height:300px;
-  background:radial-gradient(circle at top right,rgba(255,215,0,0.06),transparent 70%);
-  pointer-events:none;z-index:0;
-}
-
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,195,247,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(79,195,247,0.025) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle at top right,rgba(255,215,0,0.06),transparent 70%);pointer-events:none;z-index:0;}
 #app{position:relative;z-index:1;}
-
-/* ══ SCREENS ══ */
 .screen{display:none;min-height:100vh;}
 .screen.active{display:flex;flex-direction:column;}
-
-/* ══ SHARED ══ */
 .page-center{align-items:center;justify-content:center;padding:24px 20px;}
-
-.card {
-  background:rgba(26,26,62,0.6);
-  border:1px solid var(--border);
-  border-radius:16px;
-  backdrop-filter:blur(12px);
-  position:relative;overflow:hidden;
-}
-.card::before {
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-}
-
-.label-tag {
-  display:inline-flex;align-items:center;gap:6px;
-  padding:4px 10px;
-  border-radius:4px;font-size:10px;letter-spacing:2px;
-  font-family:'Orbitron',monospace;text-transform:uppercase;
-}
-.label-tag.danger{background:rgba(255,69,96,0.12);border:1px solid rgba(255,69,96,0.3);color:var(--danger);}
-.label-tag.ice{background:rgba(79,195,247,0.1);border:1px solid var(--border2);color:var(--ice);}
+.card{background:rgba(26,26,62,0.6);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(12px);position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.label-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:4px;font-size:10px;letter-spacing:2px;font-family:'Orbitron',monospace;text-transform:uppercase;}
 .label-tag.gold{background:rgba(255,215,0,0.1);border:1px solid var(--border);color:var(--gold);}
-
-.btn {
-  padding:14px 20px;border:none;border-radius:10px;
-  font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:700;
-  cursor:pointer;transition:all .2s;letter-spacing:1px;width:100%;
-}
-.btn-gold {
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  color:#0f0f23;
-  box-shadow:0 4px 24px rgba(255,215,0,0.25);
-}
+.btn{padding:14px 20px;border:none;border-radius:10px;font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px;width:100%;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0f0f23;box-shadow:0 4px 24px rgba(255,215,0,0.25);}
 .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,215,0,0.4);}
 .btn-gold:active{transform:translateY(0);}
 .btn-gold:disabled{opacity:.4;cursor:not-allowed;transform:none;}
-.btn-ghost {
-  background:transparent;
-  border:1px solid var(--border);
-  color:var(--muted);font-size:13px;padding:10px;
-}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px;}
 .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
-
 .field{margin-bottom:16px;}
 .field label{display:block;font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;}
-.field input,.field textarea {
-  width:100%;padding:13px 16px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:9px;
-  color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:14px;
-  outline:none;transition:border-color .2s,box-shadow .2s;
-}
-.field input:focus,.field textarea:focus{
-  border-color:var(--gold);
-  box-shadow:0 0 0 3px rgba(255,215,0,0.08);
-}
+.field input,.field textarea{width:100%;padding:13px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:9px;color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s;}
+.field input:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,215,0,0.08);}
 .field textarea{resize:vertical;min-height:80px;line-height:1.7;}
-
 .err-msg{font-size:12px;color:var(--danger);margin-top:10px;text-align:center;min-height:16px;}
-.ok-msg{color:var(--success);}
-
-/* ══ LOGO ══ */
+.ok-msg{color:var(--success)!important;}
+/* LOGO */
 .logo-wrap{text-align:center;margin-bottom:32px;}
-.logo-ring {
-  width:72px;height:72px;
-  border:2px solid var(--gold);
-  border-radius:50%;margin:0 auto 14px;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
-  box-shadow:0 0 40px rgba(255,215,0,0.2),inset 0 0 20px rgba(255,215,0,0.05);
-  animation:ring-pulse 3s ease-in-out infinite;
-}
-.logo-ring::before {
-  content:'';position:absolute;inset:-6px;
-  border-radius:50%;
-  border:1px solid rgba(255,215,0,0.15);
-}
+.logo-ring{width:72px;height:72px;border:2px solid var(--gold);border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 0 40px rgba(255,215,0,0.2),inset 0 0 20px rgba(255,215,0,0.05);animation:ring-pulse 3s ease-in-out infinite;}
+.logo-ring::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(255,215,0,0.15);}
 .logo-inner{font-size:28px;}
-@keyframes ring-pulse{
-  0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.2);}
-  50%{box-shadow:0 0 60px rgba(255,215,0,0.45);}
-}
-.logo-title{
-  font-family:'Orbitron',monospace;
-  font-size:clamp(14px,4vw,20px);font-weight:900;
-  color:var(--gold);letter-spacing:4px;
-  text-shadow:0 0 30px rgba(255,215,0,0.4);
-}
+@keyframes ring-pulse{0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.2);}50%{box-shadow:0 0 60px rgba(255,215,0,0.45);}}
+.logo-title{font-family:'Orbitron',monospace;font-size:clamp(14px,4vw,20px);font-weight:900;color:var(--gold);letter-spacing:4px;text-shadow:0 0 30px rgba(255,215,0,0.4);}
 .logo-sub{font-size:11px;color:var(--muted);letter-spacing:3px;margin-top:6px;}
-
-/* ══ AUTH SCREEN ══ */
-#screen-auth{padding:24px 20px;}
+/* AUTH */
 .auth-card{padding:28px 24px;width:100%;max-width:400px;}
 .auth-tabs{display:flex;gap:0;margin-bottom:24px;border-bottom:1px solid var(--border);}
-.auth-tab{
-  flex:1;padding:10px;background:none;border:none;
-  color:var(--muted);font-size:13px;font-family:'Noto Sans TC',sans-serif;
-  cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;
-}
+.auth-tab{flex:1;padding:10px;background:none;border:none;color:var(--muted);font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;}
 .auth-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
-
-/* ══ MAIN SCREEN ══ */
-#screen-main{padding:0;}
-
 /* HUD */
-.hud{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 20px;
-  background:rgba(15,15,35,0.92);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(16px);
-  position:sticky;top:0;z-index:100;
-}
+.hud{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(15,15,35,0.92);border-bottom:1px solid var(--border);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;}
 .hud-name{font-family:'Orbitron',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;}
-.hud-credits{
-  display:flex;align-items:center;gap:10px;
-}
-.credits-badge{
-  display:flex;align-items:center;gap:6px;
-  padding:5px 12px;
-  background:rgba(255,215,0,0.08);
-  border:1px solid var(--border);border-radius:100px;
-}
+.hud-credits{display:flex;align-items:center;gap:10px;}
+.credits-badge{display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(255,215,0,0.08);border:1px solid var(--border);border-radius:100px;}
 .credits-num{font-family:'Orbitron',monospace;font-size:13px;color:var(--gold);}
 .credits-label{font-size:10px;color:var(--muted);}
-.btn-add-credit{
-  width:26px;height:26px;border-radius:50%;
-  background:rgba(79,195,247,0.1);border:1px solid var(--border2);
-  color:var(--ice);font-size:16px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .2s;
-}
+.btn-add-credit{width:26px;height:26px;border-radius:50%;background:rgba(79,195,247,0.1);border:1px solid var(--border2);color:var(--ice);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
 .btn-add-credit:hover{background:rgba(79,195,247,0.2);transform:scale(1.1);}
-.btn-logout{
-  padding:5px 10px;background:transparent;
-  border:1px solid rgba(255,69,96,0.3);border-radius:6px;
-  color:var(--danger);font-size:10px;cursor:pointer;transition:all .2s;
-  font-family:'Orbitron',monospace;letter-spacing:1px;
-}
+.btn-logout{padding:5px 10px;background:transparent;border:1px solid rgba(255,69,96,0.3);border-radius:6px;color:var(--danger);font-size:10px;cursor:pointer;transition:all .2s;font-family:'Orbitron',monospace;letter-spacing:1px;}
 .btn-logout:hover{background:rgba(255,69,96,0.1);}
-
-/* Main content */
+/* MAIN */
 .main-content{padding:24px 20px;flex:1;}
-
-/* Goal input section */
 .goal-section{margin-bottom:28px;}
-.section-title{
-  font-family:'Orbitron',monospace;font-size:10px;
-  color:var(--muted);letter-spacing:3px;margin-bottom:14px;
-}
+.section-title{font-family:'Orbitron',monospace;font-size:10px;color:var(--muted);letter-spacing:3px;margin-bottom:14px;}
 .goal-card{padding:22px;}
 .goal-hint{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.7;}
-.goal-examples{
-  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;
-}
-.example-chip{
-  padding:5px 12px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:100px;font-size:11px;color:var(--muted);
-  cursor:pointer;transition:all .2s;
-}
+.goal-examples{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.example-chip{padding:5px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .2s;}
 .example-chip:hover{border-color:var(--gold);color:var(--gold);}
-
-/* ══ TIMER ══ */
-.timer-section{
-  text-align:center;margin-bottom:28px;
-  padding:28px 20px;
-  background:rgba(26,26,62,0.4);
-  border:1px solid var(--border);border-radius:20px;
-  position:relative;overflow:hidden;
-}
-.timer-section::before{
-  content:'';position:absolute;
-  bottom:0;left:50%;transform:translateX(-50%);
-  width:80%;height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-}
-.timer-label{
-  font-family:'Orbitron',monospace;font-size:9px;
-  color:var(--muted);letter-spacing:4px;margin-bottom:12px;
-}
-.timer-display{
-  font-family:'Orbitron',monospace;
-  font-size:clamp(42px,12vw,72px);font-weight:900;
-  color:var(--text);letter-spacing:6px;line-height:1;
-  text-shadow:0 0 40px rgba(255,255,255,0.15);
-  position:relative;
-}
+/* TIMER */
+.timer-section{text-align:center;margin-bottom:28px;padding:28px 20px;background:rgba(26,26,62,0.4);border:1px solid var(--border);border-radius:20px;position:relative;overflow:hidden;}
+.timer-section::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:80%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.timer-label{font-family:'Orbitron',monospace;font-size:9px;color:var(--muted);letter-spacing:4px;margin-bottom:12px;}
+.timer-display{font-family:'Orbitron',monospace;font-size:clamp(42px,12vw,72px);font-weight:900;color:var(--text);letter-spacing:6px;line-height:1;text-shadow:0 0 40px rgba(255,255,255,0.15);}
 .timer-display.urgent{color:var(--danger);animation:urgent-pulse .8s ease-in-out infinite;}
-.timer-display.done{color:var(--muted);}
 @keyframes urgent-pulse{0%,100%{text-shadow:0 0 20px rgba(255,69,96,0.3);}50%{text-shadow:0 0 60px rgba(255,69,96,0.8);}}
 .timer-colon{animation:blink-colon 1s step-end infinite;}
 @keyframes blink-colon{0%,100%{opacity:1;}50%{opacity:.2;}}
 .timer-sub{font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:2px;}
-.timer-goal-preview{
-  margin-top:14px;padding:10px 16px;
-  background:rgba(255,215,0,0.06);border-radius:8px;
-  font-size:13px;color:rgba(245,245,245,0.8);
-  border-left:2px solid var(--gold);text-align:left;
-}
-
-/* ══ TASKS ══ */
+.timer-goal-preview{margin-top:14px;padding:10px 16px;background:rgba(255,215,0,0.06);border-radius:8px;font-size:13px;color:rgba(245,245,245,0.8);border-left:2px solid var(--gold);text-align:left;}
+/* TASKS */
 .tasks-section{margin-bottom:20px;}
 .tasks-grid{display:flex;flex-direction:column;gap:10px;}
-.task-card{
-  padding:18px;cursor:pointer;transition:all .25s;
-  display:flex;align-items:flex-start;gap:14px;
-}
-.task-card:hover:not(.done):not(.locked){
-  border-color:rgba(255,215,0,0.4);
-  background:rgba(255,215,0,0.05);
-  transform:translateX(3px);
-}
+.task-card{padding:18px;cursor:pointer;transition:all .25s;display:flex;align-items:flex-start;gap:14px;}
+.task-card:hover:not(.done):not(.locked){border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.05);transform:translateX(3px);}
 .task-card.done{border-color:rgba(0,230,118,0.25);background:rgba(0,230,118,0.04);}
 .task-card.locked{opacity:.35;cursor:not-allowed;}
-.task-num{
-  width:32px;height:32px;border-radius:8px;flex-shrink:0;
-  background:rgba(255,215,0,0.08);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Orbitron',monospace;font-size:11px;color:var(--gold);
-}
+.task-num{width:32px;height:32px;border-radius:8px;flex-shrink:0;background:rgba(255,215,0,0.08);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:11px;color:var(--gold);}
 .task-num.done-num{background:rgba(0,230,118,0.1);border-color:rgba(0,230,118,0.3);color:var(--success);}
 .task-body{flex:1;}
 .task-title{font-size:15px;font-weight:700;margin-bottom:5px;line-height:1.3;}
 .task-desc{font-size:12px;color:rgba(245,245,245,0.6);line-height:1.6;}
-.task-done-label{
-  margin-top:8px;font-size:10px;color:var(--success);
-  font-family:'Orbitron',monospace;letter-spacing:1px;
-}
-
-/* ══ EMPTY STATE ══ */
-.empty-state{
-  text-align:center;padding:40px 20px;
-}
-.empty-icon{font-size:40px;margin-bottom:14px;opacity:.5;}
-.empty-text{font-size:14px;color:var(--muted);line-height:1.7;}
-
-/* ══ LOCKED STATE ══ */
-.locked-overlay{
-  text-align:center;padding:32px 24px;
-  background:rgba(255,69,96,0.05);
-  border:1px solid rgba(255,69,96,0.2);
-  border-radius:16px;margin-bottom:20px;
-}
+.task-done-label{margin-top:8px;font-size:10px;color:var(--success);font-family:'Orbitron',monospace;letter-spacing:1px;}
+/* LOCKED */
+.locked-overlay{text-align:center;padding:32px 24px;background:rgba(255,69,96,0.05);border:1px solid rgba(255,69,96,0.2);border-radius:16px;margin-bottom:20px;}
 .locked-icon{font-size:36px;margin-bottom:12px;}
 .locked-title{font-size:18px;font-weight:700;color:var(--danger);margin-bottom:8px;}
 .locked-desc{font-size:13px;color:var(--muted);line-height:1.7;}
-
-/* ══ MODAL ══ */
-.modal-bg{
-  position:fixed;inset:0;background:rgba(0,0,0,0.8);
-  z-index:500;display:none;align-items:center;justify-content:center;
-  padding:20px;backdrop-filter:blur(4px);
-}
+/* GENERATING */
+.generating-wrap{text-align:center;padding:40px 20px;}
+.gen-spinner{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,215,0,0.15);border-top-color:var(--gold);margin:0 auto 20px;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.gen-text{font-size:14px;color:var(--muted);line-height:1.7;}
+.gen-dots::after{content:'...';animation:dots 1.5s step-end infinite;}
+@keyframes dots{0%{content:''}33%{content:'.'}66%{content:'..'}100%{content:'...'}}
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
 .modal-bg.show{display:flex;}
-.modal{
-  width:100%;max-width:380px;padding:28px 24px;
-  animation:modal-in .25s ease;
-}
+.modal{width:100%;max-width:380px;padding:28px 24px;animation:modal-in .25s ease;}
 @keyframes modal-in{from{opacity:0;transform:scale(.95) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
 .modal h3{font-size:18px;font-weight:700;color:var(--gold);margin-bottom:8px;}
 .modal p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
 .modal-btns{display:flex;gap:10px;margin-top:16px;}
 .modal-btns .btn{width:auto;flex:1;padding:11px;}
-
-/* ══ GENERATING ══ */
-.generating-wrap{
-  text-align:center;padding:40px 20px;
-}
-.gen-spinner{
-  width:48px;height:48px;border-radius:50%;
-  border:2px solid rgba(255,215,0,0.15);
-  border-top-color:var(--gold);
-  margin:0 auto 20px;
-  animation:spin 1s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg);}}
-.gen-text{font-size:14px;color:var(--muted);line-height:1.7;}
-.gen-dots::after{content:'...';animation:dots 1.5s step-end infinite;}
-@keyframes dots{0%{content:''}33%{content:'.'}66%{content:'..'}100%{content:'...'}}
-
-/* ══ NOTIFICATION ══ */
-#notif{
-  position:fixed;top:76px;left:50%;transform:translateX(-50%) translateY(-8px);
-  background:rgba(15,15,35,0.97);
-  border:1px solid var(--gold);border-radius:10px;
-  padding:11px 20px;font-size:12px;color:var(--gold);
-  font-family:'Orbitron',monospace;letter-spacing:1px;
-  opacity:0;transition:all .3s;pointer-events:none;z-index:999;
-  white-space:nowrap;box-shadow:0 4px 30px rgba(255,215,0,0.2);
-}
+/* COMPLETE SCREEN */
+#screen-complete{align-items:center;justify-content:center;padding:24px 20px;text-align:center;}
+.complete-wrap{max-width:400px;width:100%;}
+.complete-badge{width:100px;height:100px;border:3px solid var(--gold);border-radius:50%;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;font-size:44px;animation:badge-glow 2s ease-in-out infinite;}
+@keyframes badge-glow{0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.3);}50%{box-shadow:0 0 80px rgba(255,215,0,0.7);}}
+.complete-title{font-size:28px;font-weight:900;color:var(--gold);margin-bottom:8px;font-family:'Orbitron',monospace;}
+.complete-sub{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.7;}
+.complete-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;}
+.stat-box{background:rgba(26,26,62,0.6);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.stat-num{font-family:'Orbitron',monospace;font-size:22px;color:var(--gold);}
+.stat-label{font-size:11px;color:var(--muted);margin-top:4px;}
+/* HIDDEN TASK SCREEN */
+#screen-hidden{align-items:center;justify-content:center;padding:24px 20px;}
+.hidden-wrap{max-width:400px;width:100%;text-align:center;}
+.hidden-icon{font-size:48px;margin-bottom:16px;animation:float-icon 3s ease-in-out infinite;}
+@keyframes float-icon{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.hidden-title{font-family:'Orbitron',monospace;font-size:16px;color:var(--ice);letter-spacing:3px;margin-bottom:8px;}
+.hidden-desc{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:24px;}
+.meditation-timer{font-family:'Orbitron',monospace;font-size:56px;font-weight:900;color:var(--gold);letter-spacing:4px;margin:20px 0;text-shadow:0 0 40px rgba(255,215,0,0.4);}
+.meditation-bar-wrap{background:rgba(255,255,255,0.06);border-radius:100px;height:6px;overflow:hidden;margin-bottom:24px;}
+.meditation-bar-fill{height:100%;background:linear-gradient(90deg,var(--ice),var(--gold));border-radius:100px;transition:width .5s linear;box-shadow:0 0 10px rgba(79,195,247,0.5);}
+.hidden-msg{display:none;background:rgba(255,215,0,0.08);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:20px;font-size:14px;line-height:1.8;color:var(--text);}
+.hidden-msg.show{display:block;animation:fade-in .6s ease;}
+/* NOTIFICATION */
+#notif{position:fixed;top:76px;left:50%;transform:translateX(-50%) translateY(-8px);background:rgba(15,15,35,0.97);border:1px solid var(--gold);border-radius:10px;padding:11px 20px;font-size:12px;color:var(--gold);font-family:'Orbitron',monospace;letter-spacing:1px;opacity:0;transition:all .3s;pointer-events:none;z-index:999;white-space:nowrap;box-shadow:0 4px 30px rgba(255,215,0,0.2);}
 #notif.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* ══ PARTICLES ══ */
+/* PARTICLES */
 .particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
 .p{position:absolute;border-radius:50%;animation:float linear infinite;opacity:0;}
-@keyframes float{
-  0%{opacity:0;transform:translateY(0) scale(1);}
-  10%{opacity:.5;}90%{opacity:.1;}
-  100%{opacity:0;transform:translateY(-100vh) scale(.3);}
-}
-
-/* ══ TASK COMPLETE ANIM ══ */
-@keyframes task-complete{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.03);}
-  100%{transform:scale(1);}
-}
-.task-complete-anim{animation:task-complete .4s ease;}
-
-/* ══ FADE IN ══ */
+@keyframes float{0%{opacity:0;transform:translateY(0) scale(1);}10%{opacity:.5;}90%{opacity:.1;}100%{opacity:0;transform:translateY(-100vh) scale(.3);}}
+/* CONFETTI */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;animation:confetti-fall linear forwards;pointer-events:none;z-index:999;}
+@keyframes confetti-fall{0%{opacity:1;transform:translateY(-20px) rotate(0deg);}100%{opacity:0;transform:translateY(100vh) rotate(720deg);}}
+/* ANIMS */
 .fade-in{animation:fade-in .4s ease both;}
-@keyframes fade-in{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .fade-in-2{animation:fade-in .4s .1s ease both;}
 .fade-in-3{animation:fade-in .4s .2s ease both;}
-.fade-in-4{animation:fade-in .4s .3s ease both;}
-
-@media(max-width:380px){
-  .hud{padding:10px 14px;}
-  .main-content{padding:16px 14px;}
-  .timer-display{font-size:clamp(36px,11vw,60px);}
-}
+@keyframes fade-in{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:380px){.hud{padding:10px 14px;}.main-content{padding:16px 14px;}.timer-display{font-size:clamp(36px,11vw,60px);}}
 </style>
 </head>
 <body>
-
 <div class="particles" id="particles"></div>
 <div id="notif"></div>
 
-<!-- ══ REDEEM MODAL ══ -->
+<!-- REDEEM MODAL -->
 <div class="modal-bg" id="modal-redeem">
   <div class="modal card">
     <h3>🔑 加值次數</h3>
     <p>輸入加值密碼，通過驗證後將增加使用次數。</p>
-    <div class="field">
-      <label>加值密碼</label>
-      <input type="password" id="redeem-input" placeholder="輸入密碼" />
-    </div>
+    <div class="field"><label>加值密碼</label><input type="password" id="redeem-input" placeholder="輸入密碼"/></div>
     <div class="err-msg" id="redeem-msg"></div>
     <div class="modal-btns">
-      <button class="btn btn-ghost" onclick="closeModal('modal-redeem')">取消</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-redeem');sfx.click()">取消</button>
       <button class="btn btn-gold" id="btn-redeem-confirm" onclick="doRedeem()">確認</button>
     </div>
   </div>
 </div>
 
-<!-- ══ TASK DETAIL MODAL ══ -->
+<!-- TASK MODAL -->
 <div class="modal-bg" id="modal-task">
   <div class="modal card">
     <div class="label-tag gold" style="margin-bottom:14px" id="modal-task-num">TASK 01</div>
-    <h3 id="modal-task-title">任務標題</h3>
-    <p id="modal-task-desc">任務說明</p>
+    <h3 id="modal-task-title"></h3>
+    <p id="modal-task-desc"></p>
     <div class="modal-btns">
-      <button class="btn btn-ghost" onclick="closeModal('modal-task')">稍後</button>
-      <button class="btn btn-gold" id="btn-task-done" onclick="markTaskDone()">✅ 完成此任務</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-task');sfx.click()">稍後</button>
+      <button class="btn btn-gold" onclick="markTaskDone()">✅ 完成此任務</button>
     </div>
   </div>
 </div>
 
 <div id="app">
 
-  <!-- ══ AUTH ══ -->
-  <div class="screen active page-center" id="screen-auth">
-    <div class="logo-wrap fade-in">
-      <div class="logo-ring"><div class="logo-inner">⚡</div></div>
-      <div class="logo-title">24HR MISSION</div>
-      <div class="logo-sub">人生改變計畫 · 特工行動</div>
+<!-- AUTH -->
+<div class="screen active page-center" id="screen-auth">
+  <div class="logo-wrap fade-in">
+    <div class="logo-ring"><div class="logo-inner">⚡</div></div>
+    <div class="logo-title">24HR MISSION</div>
+    <div class="logo-sub">人生改變計畫 · 特工行動</div>
+  </div>
+  <div class="auth-card card fade-in-2">
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">登入</button>
+      <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">註冊</button>
     </div>
+    <div id="form-login">
+      <div class="field"><label>電話號碼</label><input type="tel" id="login-phone" placeholder="09xxxxxxxx" maxlength="10"/></div>
+      <button class="btn btn-gold" onclick="doLogin()">🚀 進入任務</button>
+      <div class="err-msg" id="login-msg"></div>
+    </div>
+    <div id="form-register" style="display:none">
+      <div class="field"><label>特工代號（名字）</label><input type="text" id="reg-name" placeholder="你的名字" maxlength="20"/></div>
+      <div class="field"><label>電話號碼</label><input type="tel" id="reg-phone" placeholder="09xxxxxxxx" maxlength="10"/></div>
+      <button class="btn btn-gold" onclick="doRegister()">🎖️ 建立特工檔案</button>
+      <div class="err-msg" id="reg-msg"></div>
+      <p style="margin-top:14px;font-size:11px;color:var(--muted);text-align:center;line-height:1.7;">前20名特工自動獲得 <span style="color:var(--gold)">1次免費</span> 使用機會<br>同一電話號碼只能註冊一次</p>
+    </div>
+  </div>
+</div>
 
-    <div class="auth-card card fade-in-2">
-      <div class="auth-tabs">
-        <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">登入</button>
-        <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">註冊</button>
+<!-- MAIN -->
+<div class="screen" id="screen-main">
+  <div class="hud">
+    <div class="hud-name" id="hud-name">AGENT</div>
+    <div class="hud-credits">
+      <div class="credits-badge"><div class="credits-num" id="hud-credits">0</div><div class="credits-label">次數</div></div>
+      <button class="btn-add-credit" onclick="sfx.click();openModal('modal-redeem')" title="加值次數">+</button>
+      <button class="btn-logout" onclick="doLogout()">登出</button>
+    </div>
+  </div>
+  <div class="main-content">
+    <div id="locked-state" style="display:none">
+      <div class="locked-overlay">
+        <div class="locked-icon">🔒</div>
+        <div class="locked-title">使用次數已用完</div>
+        <div class="locked-desc">點擊右上角「+」輸入加值密碼<br>或聯繫管理員取得更多次數</div>
       </div>
-
-      <!-- Login -->
-      <div id="form-login">
-        <div class="field">
-          <label>電話號碼</label>
-          <input type="tel" id="login-phone" placeholder="09xxxxxxxx" maxlength="10" />
-        </div>
-        <button class="btn btn-gold" onclick="doLogin()">🚀 進入任務</button>
-        <div class="err-msg" id="login-msg"></div>
+    </div>
+    <div id="active-state">
+      <div class="timer-section fade-in">
+        <div class="timer-label">MISSION COUNTDOWN</div>
+        <div class="timer-display" id="timer">--:--:--</div>
+        <div class="timer-sub" id="timer-sub">等待任務啟動</div>
+        <div class="timer-goal-preview" id="timer-goal" style="display:none"></div>
       </div>
-
-      <!-- Register -->
-      <div id="form-register" style="display:none">
-        <div class="field">
-          <label>特工代號（名字）</label>
-          <input type="text" id="reg-name" placeholder="你的名字" maxlength="20" />
+      <div class="goal-section fade-in-2" id="goal-section">
+        <div class="section-title">設定習慣目標</div>
+        <div class="goal-card card">
+          <div class="goal-hint">你想養成什麼習慣？AI 將為你生成4個專屬任務，展開24小時改變計畫。</div>
+          <div class="goal-examples">
+            <span class="example-chip" onclick="setExample(this)">每天早起運動</span>
+            <span class="example-chip" onclick="setExample(this)">戒掉滑手機習慣</span>
+            <span class="example-chip" onclick="setExample(this)">建立閱讀習慣</span>
+            <span class="example-chip" onclick="setExample(this)">提升業績表現</span>
+          </div>
+          <div class="field" style="margin-bottom:14px"><label>我想要...</label><textarea id="goal-input" placeholder="例如：我想養成每天早起的習慣，讓自己有更多時間做重要的事"></textarea></div>
+          <button class="btn btn-gold" id="btn-generate" onclick="generateTasks()">⚡ AI 生成我的4個任務</button>
+          <div class="err-msg" id="goal-msg"></div>
         </div>
-        <div class="field">
-          <label>電話號碼</label>
-          <input type="tel" id="reg-phone" placeholder="09xxxxxxxx" maxlength="10" />
+      </div>
+      <div class="tasks-section" id="tasks-section" style="display:none">
+        <div class="section-title">今日任務</div>
+        <div class="tasks-grid" id="tasks-grid"></div>
+        <div style="margin-top:16px;text-align:center">
+          <button class="btn btn-ghost" style="width:auto;padding:10px 20px;font-size:12px" onclick="resetMission()">重新設定目標</button>
         </div>
-        <button class="btn btn-gold" onclick="doRegister()">🎖️ 建立特工檔案</button>
-        <div class="err-msg" id="reg-msg"></div>
-        <p style="margin-top:14px;font-size:11px;color:var(--muted);text-align:center;line-height:1.7;">
-          前20名特工自動獲得 <span style="color:var(--gold)">1次免費</span> 使用機會<br>同一電話號碼只能註冊一次
-        </p>
+      </div>
+      <div id="generating-state" style="display:none">
+        <div class="generating-wrap">
+          <div class="gen-spinner"></div>
+          <div class="gen-text">AI 正在分析你的目標<span class="gen-dots"></span><br><span style="font-size:12px;color:var(--muted)">根據24小時重啟系統為你生成專屬任務</span></div>
+        </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ══ MAIN ══ -->
-  <div class="screen" id="screen-main">
-
-    <!-- HUD -->
-    <div class="hud">
-      <div class="hud-name" id="hud-name">AGENT</div>
-      <div class="hud-credits">
-        <div class="credits-badge">
-          <div class="credits-num" id="hud-credits">0</div>
-          <div class="credits-label">次數</div>
-        </div>
-        <button class="btn-add-credit" onclick="openModal('modal-redeem')" title="加值次數">+</button>
-        <button class="btn-logout" onclick="doLogout()">登出</button>
-      </div>
+<!-- COMPLETE SCREEN -->
+<div class="screen page-center" id="screen-complete">
+  <div class="complete-wrap">
+    <div class="complete-badge">🏆</div>
+    <div class="complete-title fade-in">任務全達成！</div>
+    <div class="complete-sub fade-in-2">你已完成今日全部4個任務<br>大腦已建立「贏的反饋迴路」</div>
+    <div class="complete-stats fade-in-2">
+      <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">任務完成</div></div>
+      <div class="stat-box"><div class="stat-num" id="complete-time">--</div><div class="stat-label">用時</div></div>
     </div>
+    <button class="btn btn-gold fade-in-3" onclick="goHiddenTask()" style="margin-bottom:14px">🔓 解鎖隱藏任務</button>
+    <button class="btn btn-ghost fade-in-3" onclick="resetMission()">重新設定目標</button>
+  </div>
+</div>
 
-    <div class="main-content">
-
-      <!-- Locked state -->
-      <div id="locked-state" style="display:none">
-        <div class="locked-overlay">
-          <div class="locked-icon">🔒</div>
-          <div class="locked-title">使用次數已用完</div>
-          <div class="locked-desc">點擊右上角「+」輸入加值密碼<br>或聯繫管理員取得更多次數</div>
-        </div>
-      </div>
-
-      <!-- Active state -->
-      <div id="active-state">
-
-        <!-- Timer -->
-        <div class="timer-section fade-in" id="timer-section">
-          <div class="timer-label">MISSION COUNTDOWN</div>
-          <div class="timer-display" id="timer">--:--:--</div>
-          <div class="timer-sub" id="timer-sub">等待任務啟動</div>
-          <div class="timer-goal-preview" id="timer-goal" style="display:none"></div>
-        </div>
-
-        <!-- Goal Input -->
-        <div class="goal-section fade-in-2" id="goal-section">
-          <div class="section-title">設定習慣目標</div>
-          <div class="goal-card card">
-            <div class="goal-hint">你想養成什麼習慣？AI 將為你生成4個專屬任務，展開24小時改變計畫。</div>
-            <div class="goal-examples">
-              <span class="example-chip" onclick="setExample(this)">每天早起運動</span>
-              <span class="example-chip" onclick="setExample(this)">戒掉滑手機習慣</span>
-              <span class="example-chip" onclick="setExample(this)">建立閱讀習慣</span>
-              <span class="example-chip" onclick="setExample(this)">提升業績表現</span>
-            </div>
-            <div class="field" style="margin-bottom:14px">
-              <label>我想要...</label>
-              <textarea id="goal-input" placeholder="例如：我想養成每天早起的習慣，讓自己有更多時間做重要的事"></textarea>
-            </div>
-            <button class="btn btn-gold" id="btn-generate" onclick="generateTasks()">⚡ AI 生成我的4個任務</button>
-            <div class="err-msg" id="goal-msg"></div>
-          </div>
-        </div>
-
-        <!-- Tasks -->
-        <div class="tasks-section" id="tasks-section" style="display:none">
-          <div class="section-title">今日任務</div>
-          <div class="tasks-grid" id="tasks-grid"></div>
-          <div style="margin-top:16px;text-align:center">
-            <button class="btn btn-ghost" style="width:auto;padding:10px 20px;font-size:12px" onclick="resetMission()">重新設定目標</button>
-          </div>
-        </div>
-
-        <!-- Generating -->
-        <div id="generating-state" style="display:none">
-          <div class="generating-wrap">
-            <div class="gen-spinner"></div>
-            <div class="gen-text">AI 正在分析你的目標<span class="gen-dots"></span><br><span style="font-size:12px;color:var(--muted)">根據24小時重啟系統為你生成專屬任務</span></div>
-          </div>
-        </div>
-
-      </div><!-- /active-state -->
-    </div><!-- /main-content -->
-  </div><!-- /screen-main -->
+<!-- HIDDEN TASK SCREEN -->
+<div class="screen page-center" id="screen-hidden">
+  <div class="hidden-wrap">
+    <div class="hidden-icon">🧘</div>
+    <div class="hidden-title">HIDDEN MISSION</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:6px;letter-spacing:1px;">隱藏任務 · 小確聖挑戰</p>
+    <div class="hidden-desc">閉上眼睛，冥想一分鐘。<br>在心中告訴自己：<br><span style="color:var(--gold);font-weight:700;">「獲得四次的小勝利，<br>已經成為『小確聖』了～<br>完成微小但確定的勝利！」</span></div>
+    <div class="meditation-timer" id="meditation-timer">01:00</div>
+    <div class="meditation-bar-wrap"><div class="meditation-bar-fill" id="meditation-bar" style="width:100%"></div></div>
+    <button class="btn btn-gold" id="btn-meditation" onclick="startMeditation()">▶ 開始冥想</button>
+    <div class="hidden-msg" id="hidden-msg">
+      🌟 你做到了！<br><br>
+      你已經是「小確聖」——<br>完成微小但確定的勝利的人。<br><br>
+      每一個小勝利，都在重塑你的大腦迴路。<br>明天，繼續讓大腦「愛上贏」。
+    </div>
+    <button class="btn btn-ghost" style="margin-top:16px" onclick="resetMission()">開始新一輪</button>
+  </div>
+</div>
 
 </div><!-- /app -->
 
 <script>
-// ══ CONFIG ══════════════════════════════════════════
-const SB_URL  = 'https://hhcubvixldieuwdeqnwc.supabase.co';
-const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhoY3Vidml4bGRpZXV3ZGVxbndjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1NjcyNDYsImV4cCI6MjA5MTE0MzI0Nn0.zkWxfm0FugSEL9zW6pwDFWPqmRJ3ystOZfU8yRL2lPo';
-const EDGE_BASE = SB_URL + '/functions/v1';
+const SB_URL='https://hhcubvixldieuwdeqnwc.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhoY3Vidml4bGRpZXV3ZGVxbndjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1NjcyNDYsImV4cCI6MjA5MTE0MzI0Nn0.zkWxfm0FugSEL9zW6pwDFWPqmRJ3ystOZfU8yRL2lPo';
+const EDGE_BASE=SB_URL+'/functions/v1';
 
-// ══ STATE ═══════════════════════════════════════════
-let currentUser = null;
-let timerInterval = null;
-let currentTaskIndex = null;
-let currentMission = null; // {id, goal, tasks[], started_at}
+let currentUser=null,timerInterval=null,currentTaskIndex=null,currentMission=null;
+let bgMusicPlaying=false,bgMusicNodes=[],meditationInterval=null,meditationMusicNodes=[];
 
-// ══ LOCAL STORAGE ════════════════════════════════════
-const LS = {
-  get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } },
-  set: (k,v) => localStorage.setItem(k, JSON.stringify(v)),
-  del: k => localStorage.removeItem(k)
+const LS={
+  get:k=>{try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},
+  set:(k,v)=>localStorage.setItem(k,JSON.stringify(v)),
+  del:k=>localStorage.removeItem(k)
 };
 
-// ══ PARTICLES ════════════════════════════════════════
+// ── PARTICLES ──
 (function(){
-  const wrap = document.getElementById('particles');
+  const wrap=document.getElementById('particles');
   for(let i=0;i<18;i++){
-    const p = document.createElement('div');
-    p.className='p';
-    const size = 1+Math.random()*2;
+    const p=document.createElement('div');p.className='p';
+    const size=1+Math.random()*2;
     p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;background:${Math.random()>.5?'var(--gold)':'var(--ice)'};animation-duration:${8+Math.random()*14}s;animation-delay:${Math.random()*12}s;`;
     wrap.appendChild(p);
   }
 })();
 
-// ══ SUPABASE FETCH ════════════════════════════════════
-async function sbFetch(path, opts={}) {
-  const res = await fetch(SB_URL+'/rest/v1/'+path, {
-    headers: {
-      'apikey': SB_KEY,
-      'Authorization': 'Bearer '+SB_KEY,
-      'Content-Type': 'application/json',
-      'Prefer': opts.prefer||'return=representation',
-      ...opts.headers
-    },
-    method: opts.method||'GET',
-    body: opts.body ? JSON.stringify(opts.body) : undefined
-  });
-  if(res.status===204) return null;
-  const data = await res.json();
-  if(!res.ok) throw new Error(data.message||data.error||'Request failed');
-  return data;
-}
-
-async function edgeFetch(fn, body) {
-  const res = await fetch(EDGE_BASE+'/'+fn, {
-    method:'POST',
-    headers:{
-      'Authorization':'Bearer '+SB_KEY,
-      'Content-Type':'application/json'
-    },
-    body: JSON.stringify(body)
-  });
-  const data = await res.json();
-  if(!res.ok) throw new Error(data.error||'Edge function error');
-  return data;
-}
-
-// ══ AUDIO ════════════════════════════════════════════
+// ── AUDIO ENGINE ──
 let actx=null;
-function tone(f,d,t='sine',g=0.12){
+function getCtx(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
+function tone(f,d,t='sine',g=0.12,delay=0){
   try{
-    if(!actx) actx=new(window.AudioContext||window.webkitAudioContext)();
-    const o=actx.createOscillator(),gn=actx.createGain();
-    o.connect(gn);gn.connect(actx.destination);
+    const ctx=getCtx();
+    const o=ctx.createOscillator(),gn=ctx.createGain();
+    o.connect(gn);gn.connect(ctx.destination);
     o.type=t;o.frequency.value=f;
-    gn.gain.setValueAtTime(g,actx.currentTime);
-    gn.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);
-    o.start();o.stop(actx.currentTime+d);
-  }catch(e){}
+    const s=ctx.currentTime+delay;
+    gn.gain.setValueAtTime(0,s);
+    gn.gain.linearRampToValueAtTime(g,s+0.02);
+    gn.gain.exponentialRampToValueAtTime(0.001,s+d);
+    o.start(s);o.stop(s+d);
+    return o;
+  }catch(e){return null;}
 }
+
 const sfx={
-  click:()=>tone(600,.05,'square',.05),
-  success:()=>{tone(880,.1);setTimeout(()=>tone(1100,.2),100);},
-  unlock:()=>[440,550,660,880].forEach((f,i)=>setTimeout(()=>tone(f,.15),i*80)),
-  error:()=>tone(200,.3,'sawtooth',.08),
-  tick:()=>tone(1200,.03,'square',.02)
+  click:()=>tone(600,.08,'square',.05),
+  success:()=>{tone(523,.12,undefined,.1);tone(659,.12,undefined,.1,.13);tone(784,.2,undefined,.12,.26);},
+  unlock:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.2,undefined,.12,i*.1));},
+  error:()=>tone(150,.4,'sawtooth',.08),
+  complete:()=>{
+    const notes=[523,659,784,1047,1319];
+    notes.forEach((f,i)=>tone(f,.3,undefined,.15,i*.12));
+    setTimeout(()=>notes.reverse().forEach((f,i)=>tone(f,.3,undefined,.1,i*.08)),800);
+  },
+  taskDone:()=>{tone(880,.1,undefined,.1);setTimeout(()=>tone(1100,.15,undefined,.1),120);},
+  meditation:()=>{tone(432,.5,'sine',.08);tone(528,.5,'sine',.06,.5);tone(639,.8,'sine',.07,1);}
 };
 
-// ══ UI HELPERS ═══════════════════════════════════════
+// ── MI THEME (近似旋律) ──
+function playMissionTheme(){
+  if(bgMusicPlaying)return;
+  bgMusicPlaying=true;
+  try{
+    const ctx=getCtx();
+    // 不可能任務主題近似音符
+    const melody=[
+      {f:330,d:.18,delay:0},{f:349,d:.18,delay:.2},{f:330,d:.18,delay:.4},
+      {f:220,d:.36,delay:.6},{f:330,d:.18,delay:1.0},{f:349,d:.18,delay:1.2},
+      {f:330,d:.36,delay:1.4},{f:262,d:.36,delay:1.8},
+      {f:330,d:.18,delay:2.2},{f:349,d:.18,delay:2.4},{f:330,d:.18,delay:2.6},
+      {f:220,d:.54,delay:2.8},{f:175,d:.36,delay:3.4},
+    ];
+    const bass=[
+      {f:110,d:.36,delay:0},{f:110,d:.36,delay:.4},{f:110,d:.36,delay:.8},
+      {f:131,d:.36,delay:1.2},{f:110,d:.36,delay:1.6},{f:110,d:.36,delay:2.0},
+      {f:98,d:.36,delay:2.4},{f:110,d:.36,delay:2.8},{f:131,d:.72,delay:3.2},
+    ];
+    bgMusicNodes=[];
+    const play=()=>{
+      melody.forEach(n=>{const o=tone(n.f,n.d,'square',.06,n.delay);if(o)bgMusicNodes.push(o);});
+      bass.forEach(n=>{const o=tone(n.f,n.d,'sawtooth',.04,n.delay);if(o)bgMusicNodes.push(o);});
+    };
+    play();
+    // 循環播放
+    bgMusicNodes._interval=setInterval(()=>{if(bgMusicPlaying)play();},3800);
+  }catch(e){}
+}
+
+function stopMissionTheme(){
+  bgMusicPlaying=false;
+  if(bgMusicNodes._interval)clearInterval(bgMusicNodes._interval);
+  bgMusicNodes=[];
+}
+
+// ── 輕音樂（冥想用）──
+function playMeditationMusic(){
+  try{
+    const ctx=getCtx();
+    const chords=[[264,330,396],[297,370,440],[330,415,494],[264,330,396]];
+    let ci=0;
+    const playChord=()=>{
+      chords[ci%chords.length].forEach(f=>{
+        const o=ctx.createOscillator(),g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);
+        o.type='sine';o.frequency.value=f;
+        g.gain.setValueAtTime(0,ctx.currentTime);
+        g.gain.linearRampToValueAtTime(.04,ctx.currentTime+.5);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+3);
+        o.start();o.stop(ctx.currentTime+3);
+        meditationMusicNodes.push(o);
+      });
+      ci++;
+    };
+    playChord();
+    meditationMusicNodes._interval=setInterval(()=>playChord(),3200);
+  }catch(e){}
+}
+
+function stopMeditationMusic(){
+  if(meditationMusicNodes._interval)clearInterval(meditationMusicNodes._interval);
+  meditationMusicNodes=[];
+}
+
+// ── CONFETTI ──
+function launchConfetti(){
+  const colors=['#ffd700','#4fc3f7','#00e676','#ff6b6b','#fff'];
+  for(let i=0;i<60;i++){
+    setTimeout(()=>{
+      const el=document.createElement('div');
+      el.className='confetti-piece';
+      el.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${colors[Math.floor(Math.random()*colors.length)]};transform:rotate(${Math.random()*360}deg);animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*.5}s;`;
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),4000);
+    },i*30);
+  }
+}
+
+// ── SUPABASE ──
+async function sbFetch(path,opts={}){
+  const res=await fetch(SB_URL+'/rest/v1/'+path,{
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':opts.prefer||'return=representation',...opts.headers},
+    method:opts.method||'GET',
+    body:opts.body?JSON.stringify(opts.body):undefined
+  });
+  if(res.status===204)return null;
+  const data=await res.json();
+  if(!res.ok)throw new Error(data.message||data.error||'Request failed');
+  return data;
+}
+async function edgeFetch(fn,body){
+  const res=await fetch(EDGE_BASE+'/'+fn,{method:'POST',headers:{'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const data=await res.json();
+  if(!res.ok)throw new Error(data.error||'Edge function error');
+  return data;
+}
+
+// ── UI ──
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+id).classList.add('active');
@@ -645,210 +475,173 @@ function notify(msg,dur=2800){
   el.textContent=msg;el.classList.add('show');
   setTimeout(()=>el.classList.remove('show'),dur);
 }
-function openModal(id){sfx.click();document.getElementById(id).classList.add('show');}
+function openModal(id){document.getElementById(id).classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 function setMsg(id,msg,ok=false){
   const el=document.getElementById(id);
-  el.textContent=msg;
-  el.className='err-msg'+(ok?' ok-msg':'');
+  el.textContent=msg;el.className='err-msg'+(ok?' ok-msg':'');
 }
-
-// ══ AUTH TABS ════════════════════════════════════════
 function switchAuthTab(tab){
   sfx.click();
-  document.getElementById('form-login').style.display = tab==='login'?'block':'none';
-  document.getElementById('form-register').style.display = tab==='register'?'block':'none';
+  document.getElementById('form-login').style.display=tab==='login'?'block':'none';
+  document.getElementById('form-register').style.display=tab==='register'?'block':'none';
   document.getElementById('tab-login').classList.toggle('active',tab==='login');
   document.getElementById('tab-register').classList.toggle('active',tab==='register');
 }
 
-// ══ REGISTER ═════════════════════════════════════════
+// ── REGISTER ──
 async function doRegister(){
   sfx.click();
-  const name  = document.getElementById('reg-name').value.trim();
-  const phone = document.getElementById('reg-phone').value.trim();
+  const name=document.getElementById('reg-name').value.trim();
+  const phone=document.getElementById('reg-phone').value.trim();
   setMsg('reg-msg','');
   if(!name||!phone){setMsg('reg-msg','請填寫所有欄位');return;}
   if(!/^09\d{8}$/.test(phone)){setMsg('reg-msg','請輸入有效的台灣手機號碼');return;}
-
-  const btn = document.querySelector('#form-register .btn');
+  const btn=document.querySelector('#form-register .btn');
   btn.disabled=true;btn.textContent='處理中...';
-
-  try {
-    // Check phone uniqueness
-    const exists = await sbFetch(`h24_users?phone=eq.${phone}&limit=1`);
-    if(exists && exists.length>0){setMsg('reg-msg','此電話號碼已註冊');btn.disabled=false;btn.textContent='🎖️ 建立特工檔案';return;}
-
-    // Count existing users to determine credits
-    const countRes = await sbFetch('h24_users?select=id');
-    const userCount = countRes ? countRes.length : 0;
-    const credits = userCount < 20 ? 1 : 0;
-
-    // Create user
-    const newUser = await sbFetch('h24_users',{
-      method:'POST',
-      body:{ name, phone, credits }
-    });
-    currentUser = newUser[0];
-    LS.set('user_id', currentUser.id);
+  try{
+    const exists=await sbFetch(`h24_users?phone=eq.${phone}&limit=1`);
+    if(exists&&exists.length>0){setMsg('reg-msg','此電話號碼已註冊');btn.disabled=false;btn.textContent='🎖️ 建立特工檔案';return;}
+    const countRes=await sbFetch('h24_users?select=id');
+    const credits=(countRes?countRes.length:0)<20?1:0;
+    const newUser=await sbFetch('h24_users',{method:'POST',body:{name,phone,credits}});
+    currentUser=newUser[0];
+    LS.set('user_id',currentUser.id);
     enterMain();
     notify('🎖️ 歡迎特工 '+name+(credits>0?' · 獲得1次免費機會':''));
-    if(credits>0) sfx.unlock();
-  } catch(e) {
-    setMsg('reg-msg','錯誤：'+e.message);
-  }
+    if(credits>0)sfx.unlock();
+  }catch(e){setMsg('reg-msg','錯誤：'+e.message);}
   btn.disabled=false;btn.textContent='🎖️ 建立特工檔案';
 }
 
-// ══ LOGIN ═════════════════════════════════════════════
+// ── LOGIN ──
 async function doLogin(){
   sfx.click();
-  const phone = document.getElementById('login-phone').value.trim();
+  const phone=document.getElementById('login-phone').value.trim();
   setMsg('login-msg','');
   if(!phone){setMsg('login-msg','請輸入電話號碼');return;}
-
-  const btn = document.querySelector('#form-login .btn');
+  const btn=document.querySelector('#form-login .btn');
   btn.disabled=true;btn.textContent='驗證中...';
-
-  try {
-    const users = await sbFetch(`h24_users?phone=eq.${phone}&limit=1`);
+  try{
+    const users=await sbFetch(`h24_users?phone=eq.${phone}&limit=1`);
     if(!users||users.length===0){setMsg('login-msg','找不到此電話號碼，請先註冊');btn.disabled=false;btn.textContent='🚀 進入任務';return;}
-    currentUser = users[0];
-    LS.set('user_id', currentUser.id);
+    currentUser=users[0];
+    LS.set('user_id',currentUser.id);
     enterMain();
     notify('✅ 歡迎回來，特工 '+currentUser.name);
     sfx.click();
-  } catch(e) {
-    setMsg('login-msg','錯誤：'+e.message);
-  }
+  }catch(e){setMsg('login-msg','錯誤：'+e.message);}
   btn.disabled=false;btn.textContent='🚀 進入任務';
 }
 
-// ══ AUTO LOGIN ════════════════════════════════════════
+// ── AUTO LOGIN ──
 async function tryAutoLogin(){
-  const id = LS.get('user_id');
-  if(!id) return;
-  try {
-    const users = await sbFetch(`h24_users?id=eq.${id}&limit=1`);
-    if(users&&users.length>0){
-      currentUser=users[0];
-      enterMain();
-      return;
-    }
-  } catch(e){}
+  const id=LS.get('user_id');
+  if(!id)return;
+  try{
+    const users=await sbFetch(`h24_users?id=eq.${id}&limit=1`);
+    if(users&&users.length>0){currentUser=users[0];enterMain();return;}
+  }catch(e){}
   LS.del('user_id');
 }
 
-// ══ ENTER MAIN ════════════════════════════════════════
+// ── ENTER MAIN ──
 async function enterMain(){
   showScreen('main');
-  document.getElementById('hud-name').textContent = 'AGENT: '+(currentUser.name||'').toUpperCase();
+  document.getElementById('hud-name').textContent='AGENT: '+(currentUser.name||'').toUpperCase();
   updateCreditsUI();
-
   // 從 Supabase 撈最新任務（跨裝置同步）
-  try {
-    const missions = await sbFetch(`h24_missions?user_id=eq.${currentUser.id}&order=started_at.desc&limit=1`);
-    if(missions && missions.length > 0){
-      const m = missions[0];
-      const elapsed = Date.now() - new Date(m.started_at).getTime();
-      if(elapsed < 24*60*60*1000){
-        currentMission = { id: m.id, goal: m.goal, tasks: m.tasks, started_at: m.started_at };
-        LS.set('mission_'+currentUser.id, currentMission);
+  try{
+    const missions=await sbFetch(`h24_missions?user_id=eq.${currentUser.id}&order=started_at.desc&limit=1`);
+    if(missions&&missions.length>0){
+      const m=missions[0];
+      if(Date.now()-new Date(m.started_at).getTime()<24*60*60*1000){
+        currentMission={id:m.id,goal:m.goal,tasks:m.tasks,started_at:m.started_at};
+        LS.set('mission_'+currentUser.id,currentMission);
         showTasksUI();
         startTimer(new Date(currentMission.started_at).getTime());
         checkLockedState();
         return;
       }
     }
-  } catch(e){}
-
-  // fallback: localStorage 快取
-  const saved = LS.get('mission_'+currentUser.id);
-  if(saved && saved.tasks && saved.tasks.length>0){
-    const elapsed = Date.now() - new Date(saved.started_at).getTime();
-    if(elapsed < 24*60*60*1000){
-      currentMission = saved;
+  }catch(e){}
+  // fallback localStorage
+  const saved=LS.get('mission_'+currentUser.id);
+  if(saved&&saved.tasks&&saved.tasks.length>0){
+    if(Date.now()-new Date(saved.started_at).getTime()<24*60*60*1000){
+      currentMission=saved;
       showTasksUI();
       startTimer(new Date(currentMission.started_at).getTime());
       checkLockedState();
       return;
     }
   }
-
   showGoalUI();
   checkLockedState();
 }
 
 function updateCreditsUI(){
-  document.getElementById('hud-credits').textContent = currentUser.credits||0;
+  document.getElementById('hud-credits').textContent=currentUser.credits||0;
 }
 
 function checkLockedState(){
-  const locked = (currentUser.credits||0) <= 0 && !currentMission;
-  document.getElementById('locked-state').style.display = locked?'block':'none';
-  document.getElementById('active-state').style.display = locked?'none':'block';
+  const locked=(currentUser.credits||0)<=0&&!currentMission;
+  document.getElementById('locked-state').style.display=locked?'block':'none';
+  document.getElementById('active-state').style.display=locked?'none':'block';
 }
 
-// ══ LOGOUT ════════════════════════════════════════════
+// ── LOGOUT ──
 function doLogout(){
   sfx.click();
   clearInterval(timerInterval);
+  stopMissionTheme();
   currentUser=null;currentMission=null;
   LS.del('user_id');
   showScreen('auth');
 }
 
-// ══ REDEEM CODE ═══════════════════════════════════════
+// ── REDEEM ──
 async function doRedeem(){
   sfx.click();
-  const code = document.getElementById('redeem-input').value.trim();
+  const code=document.getElementById('redeem-input').value.trim();
   setMsg('redeem-msg','');
   if(!code){setMsg('redeem-msg','請輸入密碼');return;}
-
   const btn=document.getElementById('btn-redeem-confirm');
   btn.disabled=true;btn.textContent='驗證中...';
-
-  try {
-    const res = await edgeFetch('redeem-code',{
-      code, user_id: currentUser.id
-    });
-    currentUser.credits = res.new_credits;
+  try{
+    const res=await edgeFetch('redeem-code',{code,user_id:currentUser.id});
+    currentUser.credits=res.new_credits;
     updateCreditsUI();
     closeModal('modal-redeem');
     document.getElementById('redeem-input').value='';
     notify('🎉 加值成功！獲得 '+res.credits_added+' 次');
     sfx.unlock();
     checkLockedState();
-  } catch(e){
-    setMsg('redeem-msg',e.message||'密碼錯誤或已失效');
-    sfx.error();
-  }
+  }catch(e){setMsg('redeem-msg',e.message||'密碼錯誤或已失效');sfx.error();}
   btn.disabled=false;btn.textContent='確認';
 }
 
-// ══ TIMER ════════════════════════════════════════════
+// ── TIMER ──
 function startTimer(startMs){
   clearInterval(timerInterval);
-  const DURATION = 24*60*60*1000;
-  const render = ()=>{
-    const remain = Math.max(0, DURATION-(Date.now()-startMs));
-    const h=Math.floor(remain/3600000);
-    const m=Math.floor((remain%3600000)/60000);
-    const s=Math.floor((remain%60000)/1000);
+  const DURATION=24*60*60*1000;
+  const render=()=>{
+    const remain=Math.max(0,DURATION-(Date.now()-startMs));
+    const h=Math.floor(remain/3600000),m=Math.floor((remain%3600000)/60000),s=Math.floor((remain%60000)/1000);
     const el=document.getElementById('timer');
     const pad=n=>String(n).padStart(2,'0');
     el.innerHTML=`${pad(h)}<span class="timer-colon">:</span>${pad(m)}<span class="timer-colon">:</span>${pad(s)}`;
-    el.className='timer-display'+(remain<3600000?' urgent':remain===0?' done':'');
-    document.getElementById('timer-sub').textContent = remain===0?'任務週期結束':'剩餘時間';
-    if(remain===0) clearInterval(timerInterval);
-    sfx.tick();
+    el.className='timer-display'+(remain<3600000?' urgent':'');
+    document.getElementById('timer-sub').textContent=remain===0?'任務週期結束':'剩餘時間';
+    if(remain===0)clearInterval(timerInterval);
   };
   render();
-  timerInterval = setInterval(render,1000);
+  timerInterval=setInterval(render,1000);
 }
 
-// ══ GOAL UI ═══════════════════════════════════════════
+// ── GOAL UI ──
 function showGoalUI(){
+  stopMissionTheme();
   document.getElementById('goal-section').style.display='block';
   document.getElementById('tasks-section').style.display='none';
   document.getElementById('generating-state').style.display='none';
@@ -858,51 +651,29 @@ function showGoalUI(){
   document.getElementById('timer').className='timer-display';
   clearInterval(timerInterval);
 }
+function setExample(el){sfx.click();document.getElementById('goal-input').value='我想要'+el.textContent;}
 
-function setExample(el){
-  sfx.click();
-  document.getElementById('goal-input').value='我想要'+el.textContent;
-}
-
-// ══ GENERATE TASKS ═════════════════════════════════════
+// ── GENERATE ──
 async function generateTasks(){
   sfx.click();
-  const goal = document.getElementById('goal-input').value.trim();
+  const goal=document.getElementById('goal-input').value.trim();
   setMsg('goal-msg','');
-
   if(!goal){setMsg('goal-msg','請先輸入你的習慣目標');return;}
   if(goal.length<8){setMsg('goal-msg','請描述得更具體一些');return;}
   if((currentUser.credits||0)<=0){setMsg('goal-msg','使用次數不足，請先加值');return;}
-
-  // Show generating
   document.getElementById('goal-section').style.display='none';
   document.getElementById('generating-state').style.display='block';
-
-  try {
-    const res = await edgeFetch('generate-tasks',{
-      goal, user_id: currentUser.id
-    });
-
-    // Deduct credit
-    currentUser.credits = res.new_credits;
+  try{
+    const res=await edgeFetch('generate-tasks',{goal,user_id:currentUser.id});
+    currentUser.credits=res.new_credits;
     updateCreditsUI();
-
-    // Save mission
-    const missionData = {
-      id: res.mission_id,
-      goal,
-      tasks: res.tasks, // [{title, description, done:false}]
-      started_at: new Date().toISOString()
-    };
-    currentMission = missionData;
-    LS.set('mission_'+currentUser.id, missionData);
-
-    // Start timer
-    startTimer(new Date(missionData.started_at).getTime());
+    currentMission={id:res.mission_id,goal,tasks:res.tasks,started_at:new Date().toISOString()};
+    LS.set('mission_'+currentUser.id,currentMission);
+    startTimer(new Date(currentMission.started_at).getTime());
     showTasksUI();
     sfx.unlock();
     notify('⚡ 任務已生成，24小時倒數開始！');
-  } catch(e){
+  }catch(e){
     document.getElementById('generating-state').style.display='none';
     document.getElementById('goal-section').style.display='block';
     setMsg('goal-msg','生成失敗：'+e.message);
@@ -910,25 +681,22 @@ async function generateTasks(){
   }
 }
 
-// ══ TASKS UI ══════════════════════════════════════════
+// ── TASKS UI ──
 function showTasksUI(){
   document.getElementById('goal-section').style.display='none';
   document.getElementById('generating-state').style.display='none';
   document.getElementById('tasks-section').style.display='block';
-
   const goalEl=document.getElementById('timer-goal');
   goalEl.style.display='block';
   goalEl.textContent='🎯 '+currentMission.goal;
-
   renderTasks();
+  playMissionTheme();
 }
 
 function renderTasks(){
-  const grid = document.getElementById('tasks-grid');
-  const tasks = currentMission.tasks;
-  grid.innerHTML = tasks.map((t,i)=>`
-    <div class="task-card card ${t.done?'done':''} fade-in" style="animation-delay:${i*.07}s"
-         onclick="${t.done?'':'openTaskModal('+i+')'}">
+  const tasks=currentMission.tasks;
+  document.getElementById('tasks-grid').innerHTML=tasks.map((t,i)=>`
+    <div class="task-card card ${t.done?'done':''} fade-in" style="animation-delay:${i*.07}s" onclick="${t.done?'sfx.click()':'openTaskModal('+i+')'}">
       <div class="task-num ${t.done?'done-num':''}">${t.done?'✓':String(i+1).padStart(2,'0')}</div>
       <div class="task-body">
         <div class="task-title">${t.title}</div>
@@ -941,76 +709,106 @@ function renderTasks(){
 
 function openTaskModal(idx){
   sfx.click();
-  currentTaskIndex = idx;
-  const t = currentMission.tasks[idx];
-  document.getElementById('modal-task-num').textContent = 'TASK '+String(idx+1).padStart(2,'0');
-  document.getElementById('modal-task-title').textContent = t.title;
-  document.getElementById('modal-task-desc').textContent = t.description;
+  currentTaskIndex=idx;
+  const t=currentMission.tasks[idx];
+  document.getElementById('modal-task-num').textContent='TASK '+String(idx+1).padStart(2,'0');
+  document.getElementById('modal-task-title').textContent=t.title;
+  document.getElementById('modal-task-desc').textContent=t.description;
   openModal('modal-task');
 }
 
 async function markTaskDone(){
-  sfx.success();
-  currentMission.tasks[currentTaskIndex].done = true;
-  LS.set('mission_'+currentUser.id, currentMission);
+  sfx.taskDone();
+  currentMission.tasks[currentTaskIndex].done=true;
+  LS.set('mission_'+currentUser.id,currentMission);
   closeModal('modal-task');
   renderTasks();
-
-  // 同步任務完成狀態到 Supabase
-  try {
-    await sbFetch(`h24_missions?id=eq.${currentMission.id}`, {
-      method: 'PATCH',
-      body: { tasks: currentMission.tasks },
-      prefer: 'return=minimal'
-    });
-  } catch(e){}
-
-  const allDone = currentMission.tasks.every(t=>t.done);
+  // 同步到 Supabase
+  try{await sbFetch(`h24_missions?id=eq.${currentMission.id}`,{method:'PATCH',body:{tasks:currentMission.tasks},prefer:'return=minimal'});}catch(e){}
+  const allDone=currentMission.tasks.every(t=>t.done);
   if(allDone){
     setTimeout(()=>{
-      notify('🏆 全部任務完成！你做到了！');
-      sfx.unlock();
-    },300);
-  } else {
+      stopMissionTheme();
+      sfx.complete();
+      launchConfetti();
+      // 計算用時
+      const elapsed=Date.now()-new Date(currentMission.started_at).getTime();
+      const h=Math.floor(elapsed/3600000),m=Math.floor((elapsed%3600000)/60000);
+      document.getElementById('complete-time').textContent=h+'h'+String(m).padStart(2,'0')+'m';
+      showScreen('complete');
+    },400);
+  }else{
     notify('✅ 任務完成！繼續前進');
   }
 }
 
 async function resetMission(){
   sfx.click();
-  if(!confirm('確定要重新設定目標？目前任務進度將清除。')) return;
+  if(!confirm('確定要重新設定目標？目前任務進度將清除。'))return;
   clearInterval(timerInterval);
-  // 清除 Supabase 任務（標記為過期，設 started_at 超過24小時前）
-  if(currentMission && currentMission.id){
-    try {
-      await sbFetch(`h24_missions?id=eq.${currentMission.id}`, {
-        method: 'PATCH',
-        body: { started_at: new Date(0).toISOString() },
-        prefer: 'return=minimal'
-      });
-    } catch(e){}
+  stopMissionTheme();
+  stopMeditationMusic();
+  if(currentMission&&currentMission.id){
+    try{await sbFetch(`h24_missions?id=eq.${currentMission.id}`,{method:'PATCH',body:{started_at:new Date(0).toISOString()},prefer:'return=minimal'});}catch(e){}
   }
-  currentMission = null;
+  currentMission=null;
   LS.del('mission_'+currentUser.id);
+  showScreen('main');
   showGoalUI();
   checkLockedState();
 }
 
-// ══ KEYBOARD ══════════════════════════════════════════
+// ── HIDDEN TASK ──
+function goHiddenTask(){
+  sfx.click();
+  showScreen('hidden');
+  // reset state
+  document.getElementById('meditation-timer').textContent='01:00';
+  document.getElementById('meditation-bar').style.width='100%';
+  document.getElementById('hidden-msg').classList.remove('show');
+  document.getElementById('btn-meditation').disabled=false;
+  document.getElementById('btn-meditation').textContent='▶ 開始冥想';
+  clearInterval(meditationInterval);
+  stopMeditationMusic();
+}
+
+function startMeditation(){
+  sfx.meditation();
+  const btn=document.getElementById('btn-meditation');
+  btn.disabled=true;btn.textContent='🧘 冥想中...';
+  playMeditationMusic();
+  let remaining=60;
+  const update=()=>{
+    const m=Math.floor(remaining/60),s=remaining%60;
+    document.getElementById('meditation-timer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    document.getElementById('meditation-bar').style.width=(remaining/60*100)+'%';
+    if(remaining<=0){
+      clearInterval(meditationInterval);
+      stopMeditationMusic();
+      sfx.complete();
+      document.getElementById('hidden-msg').classList.add('show');
+      btn.textContent='✨ 完成！';
+      launchConfetti();
+      return;
+    }
+    remaining--;
+  };
+  update();
+  meditationInterval=setInterval(update,1000);
+}
+
+// ── KEYBOARD ──
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'){
     if(document.getElementById('screen-auth').classList.contains('active')){
       const isLogin=document.getElementById('form-login').style.display!=='none';
-      if(isLogin) doLogin(); else doRegister();
+      if(isLogin)doLogin();else doRegister();
     }
-    if(document.getElementById('modal-redeem').classList.contains('show')) doRedeem();
+    if(document.getElementById('modal-redeem').classList.contains('show'))doRedeem();
   }
-  if(e.key==='Escape'){
-    document.querySelectorAll('.modal-bg.show').forEach(m=>m.classList.remove('show'));
-  }
+  if(e.key==='Escape')document.querySelectorAll('.modal-bg.show').forEach(m=>m.classList.remove('show'));
 });
 
-// ══ INIT ══════════════════════════════════════════════
 tryAutoLogin();
 </script>
 </body>
