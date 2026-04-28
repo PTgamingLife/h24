@@ -740,21 +740,42 @@ async function tryAutoLogin(){
 }
 
 // ══ ENTER MAIN ════════════════════════════════════════
-function enterMain(){
+async function enterMain(){
   showScreen('main');
   document.getElementById('hud-name').textContent = 'AGENT: '+(currentUser.name||'').toUpperCase();
   updateCreditsUI();
 
-  // Load active mission from localStorage
+  // 從 Supabase 撈最新任務（跨裝置同步）
+  try {
+    const missions = await sbFetch(`h24_missions?user_id=eq.${currentUser.id}&order=started_at.desc&limit=1`);
+    if(missions && missions.length > 0){
+      const m = missions[0];
+      const elapsed = Date.now() - new Date(m.started_at).getTime();
+      if(elapsed < 24*60*60*1000){
+        currentMission = { id: m.id, goal: m.goal, tasks: m.tasks, started_at: m.started_at };
+        LS.set('mission_'+currentUser.id, currentMission);
+        showTasksUI();
+        startTimer(new Date(currentMission.started_at).getTime());
+        checkLockedState();
+        return;
+      }
+    }
+  } catch(e){}
+
+  // fallback: localStorage 快取
   const saved = LS.get('mission_'+currentUser.id);
   if(saved && saved.tasks && saved.tasks.length>0){
-    currentMission = saved;
-    showTasksUI();
-    startTimer(new Date(currentMission.started_at).getTime());
-  } else {
-    showGoalUI();
+    const elapsed = Date.now() - new Date(saved.started_at).getTime();
+    if(elapsed < 24*60*60*1000){
+      currentMission = saved;
+      showTasksUI();
+      startTimer(new Date(currentMission.started_at).getTime());
+      checkLockedState();
+      return;
+    }
   }
 
+  showGoalUI();
   checkLockedState();
 }
 
@@ -928,12 +949,21 @@ function openTaskModal(idx){
   openModal('modal-task');
 }
 
-function markTaskDone(){
+async function markTaskDone(){
   sfx.success();
   currentMission.tasks[currentTaskIndex].done = true;
   LS.set('mission_'+currentUser.id, currentMission);
   closeModal('modal-task');
   renderTasks();
+
+  // 同步任務完成狀態到 Supabase
+  try {
+    await sbFetch(`h24_missions?id=eq.${currentMission.id}`, {
+      method: 'PATCH',
+      body: { tasks: currentMission.tasks },
+      prefer: 'return=minimal'
+    });
+  } catch(e){}
 
   const allDone = currentMission.tasks.every(t=>t.done);
   if(allDone){
@@ -946,13 +976,24 @@ function markTaskDone(){
   }
 }
 
-function resetMission(){
+async function resetMission(){
   sfx.click();
   if(!confirm('確定要重新設定目標？目前任務進度將清除。')) return;
   clearInterval(timerInterval);
+  // 清除 Supabase 任務（標記為過期，設 started_at 超過24小時前）
+  if(currentMission && currentMission.id){
+    try {
+      await sbFetch(`h24_missions?id=eq.${currentMission.id}`, {
+        method: 'PATCH',
+        body: { started_at: new Date(0).toISOString() },
+        prefer: 'return=minimal'
+      });
+    } catch(e){}
+  }
   currentMission = null;
   LS.del('mission_'+currentUser.id);
   showGoalUI();
+  checkLockedState();
 }
 
 // ══ KEYBOARD ══════════════════════════════════════════

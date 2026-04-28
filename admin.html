@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>24HR MISSION · 後台管理</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+:root {
+  --bg:     #0f0f23;
+  --bg2:    #1a1a3e;
+  --gold:   #ffd700;
+  --gold2:  #ffb300;
+  --ice:    #4fc3f7;
+  --text:   #f5f5f5;
+  --muted:  #6b7a99;
+  --danger: #ff4560;
+  --success:#00e676;
+  --border: rgba(255,215,0,0.15);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Noto Sans TC',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(79,195,247,0.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(79,195,247,0.02) 1px,transparent 1px);
+  background-size:50px 50px;pointer-events:none;z-index:0;
+}
+
+#app{position:relative;z-index:1;}
+
+.screen{display:none;min-height:100vh;}
+.screen.active{display:flex;flex-direction:column;}
+
+/* ── LOGIN ── */
+#screen-login{align-items:center;justify-content:center;padding:24px;}
+.login-box{
+  background:rgba(26,26,62,0.7);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:36px 28px;
+  width:100%;max-width:360px;
+  position:relative;overflow:hidden;
+}
+.login-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.login-logo{text-align:center;margin-bottom:28px;}
+.login-logo .icon{font-size:36px;margin-bottom:10px;}
+.login-logo h1{
+  font-family:'Orbitron',monospace;font-size:16px;
+  color:var(--gold);letter-spacing:3px;
+}
+.login-logo p{font-size:11px;color:var(--muted);letter-spacing:2px;margin-top:4px;}
+
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;}
+.field input{
+  width:100%;padding:13px 16px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:9px;color:var(--text);
+  font-family:'Noto Sans TC',sans-serif;font-size:14px;
+  outline:none;transition:border-color .2s;
+}
+.field input:focus{border-color:var(--gold);}
+
+.btn{
+  width:100%;padding:13px;border:none;border-radius:10px;
+  font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .2s;letter-spacing:1px;
+}
+.btn-gold{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#0f0f23;box-shadow:0 4px 20px rgba(255,215,0,0.2);
+}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 30px rgba(255,215,0,0.35);}
+.btn-gold:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.btn-sm{
+  padding:7px 14px;width:auto;font-size:12px;border-radius:7px;
+}
+.btn-ghost{
+  background:transparent;border:1px solid var(--border);
+  color:var(--muted);font-size:12px;
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.btn-danger{
+  background:rgba(255,69,96,0.12);border:1px solid rgba(255,69,96,0.3);
+  color:var(--danger);font-size:12px;
+}
+.btn-danger:hover{background:rgba(255,69,96,0.2);}
+.btn-ice{
+  background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);
+  color:var(--ice);font-size:12px;
+}
+.btn-ice:hover{background:rgba(79,195,247,0.2);}
+
+.err-msg{font-size:12px;color:var(--danger);margin-top:10px;text-align:center;min-height:16px;}
+.ok-msg{color:var(--success)!important;}
+
+/* ── MAIN ── */
+#screen-main{padding:0;}
+
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 24px;
+  background:rgba(15,15,35,0.95);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(16px);
+  position:sticky;top:0;z-index:100;
+}
+.topbar-title{
+  font-family:'Orbitron',monospace;font-size:13px;
+  color:var(--gold);letter-spacing:3px;
+}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.admin-badge{
+  padding:4px 10px;
+  background:rgba(255,215,0,0.08);
+  border:1px solid var(--border);border-radius:100px;
+  font-size:10px;color:var(--gold);font-family:'Orbitron',monospace;letter-spacing:1px;
+}
+.btn-logout-top{
+  padding:6px 12px;background:transparent;
+  border:1px solid rgba(255,69,96,0.3);border-radius:6px;
+  color:var(--danger);font-size:11px;cursor:pointer;transition:all .2s;
+  font-family:'Orbitron',monospace;letter-spacing:1px;
+}
+.btn-logout-top:hover{background:rgba(255,69,96,0.1);}
+
+.content{padding:24px;max-width:900px;margin:0 auto;}
+
+/* ── TABS ── */
+.tabs{
+  display:flex;gap:0;border-bottom:1px solid var(--border);
+  margin-bottom:24px;
+}
+.tab-btn{
+  padding:12px 20px;background:none;border:none;
+  color:var(--muted);font-size:13px;
+  font-family:'Noto Sans TC',sans-serif;
+  cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;
+  letter-spacing:1px;
+}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* ── STATS ── */
+.stats-row{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:14px;margin-bottom:28px;
+}
+.stat-card{
+  background:rgba(26,26,62,0.6);
+  border:1px solid var(--border);border-radius:12px;
+  padding:18px;text-align:center;
+}
+.stat-num{
+  font-family:'Orbitron',monospace;
+  font-size:28px;font-weight:900;color:var(--gold);
+}
+.stat-label{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:1px;}
+
+/* ── TABLE ── */
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+}
+.section-title{
+  font-family:'Orbitron',monospace;font-size:10px;
+  color:var(--muted);letter-spacing:3px;
+}
+.search-input{
+  padding:8px 14px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;color:var(--text);
+  font-family:'Noto Sans TC',sans-serif;font-size:13px;
+  outline:none;width:200px;transition:border-color .2s;
+}
+.search-input:focus{border-color:var(--gold);}
+
+.table-wrap{
+  background:rgba(26,26,62,0.4);
+  border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;
+  margin-bottom:24px;
+}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:rgba(255,215,0,0.05);border-bottom:1px solid var(--border);}
+thead th{
+  padding:12px 16px;text-align:left;
+  font-size:10px;color:var(--muted);
+  font-family:'Orbitron',monospace;letter-spacing:2px;
+  font-weight:400;
+}
+tbody tr{border-bottom:1px solid rgba(255,255,255,0.04);transition:background .15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:rgba(255,215,0,0.03);}
+tbody td{padding:12px 16px;font-size:13px;}
+.td-name{font-weight:700;}
+.td-phone{color:var(--muted);font-size:12px;}
+.td-credits{
+  font-family:'Orbitron',monospace;font-size:14px;color:var(--gold);
+}
+.td-date{font-size:11px;color:var(--muted);}
+.td-actions{display:flex;gap:6px;align-items:center;}
+
+/* Inline edit */
+.credits-edit{display:flex;align-items:center;gap:6px;}
+.credits-input{
+  width:70px;padding:6px 10px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid var(--gold);border-radius:6px;
+  color:var(--gold);font-family:'Orbitron',monospace;font-size:13px;
+  outline:none;text-align:center;
+}
+
+/* ── PROMO CODES ── */
+.promo-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.promo-card{
+  background:rgba(26,26,62,0.5);
+  border:1px solid var(--border);border-radius:10px;
+  padding:16px;
+  display:flex;align-items:center;gap:14px;
+  flex-wrap:wrap;
+}
+.promo-code{
+  font-family:'Orbitron',monospace;font-size:15px;color:var(--gold);
+  letter-spacing:2px;flex:1;min-width:120px;
+}
+.promo-meta{display:flex;gap:16px;flex-wrap:wrap;}
+.promo-meta-item{text-align:center;}
+.promo-meta-num{font-family:'Orbitron',monospace;font-size:16px;color:var(--ice);}
+.promo-meta-label{font-size:10px;color:var(--muted);margin-top:2px;}
+.promo-actions{display:flex;gap:6px;margin-left:auto;}
+
+/* Add promo form */
+.add-promo-card{
+  background:rgba(26,26,62,0.4);
+  border:1px solid rgba(79,195,247,0.2);
+  border-radius:12px;padding:20px;
+}
+.add-promo-card h3{font-size:13px;color:var(--ice);letter-spacing:2px;margin-bottom:16px;}
+.form-row{display:flex;gap:12px;flex-wrap:wrap;}
+.form-row .field{flex:1;min-width:120px;margin-bottom:0;}
+.form-row .field input{padding:10px 14px;}
+
+/* ── MODAL ── */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);
+  z-index:500;display:none;align-items:center;justify-content:center;
+  padding:20px;backdrop-filter:blur(4px);
+}
+.modal-bg.show{display:flex;}
+.modal{
+  width:100%;max-width:360px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
+  padding:28px 24px;animation:modal-in .25s ease;
+}
+@keyframes modal-in{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:scale(1);}}
+.modal h3{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:8px;}
+.modal p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.modal-btns{display:flex;gap:10px;margin-top:16px;}
+.modal-btns .btn{flex:1;padding:11px;}
+
+/* ── NOTIFICATION ── */
+#notif{
+  position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-8px);
+  background:rgba(15,15,35,0.97);border:1px solid var(--gold);border-radius:10px;
+  padding:10px 20px;font-size:12px;color:var(--gold);
+  font-family:'Orbitron',monospace;letter-spacing:1px;
+  opacity:0;transition:all .3s;pointer-events:none;z-index:999;white-space:nowrap;
+}
+#notif.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── LOADING ── */
+.loading{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
+.spinner{
+  width:32px;height:32px;border-radius:50%;
+  border:2px solid rgba(255,215,0,0.1);border-top-color:var(--gold);
+  margin:0 auto 12px;animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.empty{text-align:center;padding:32px;color:var(--muted);font-size:13px;}
+
+@media(max-width:600px){
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .content{padding:16px;}
+  .topbar{padding:12px 16px;}
+  .form-row{flex-direction:column;}
+  thead th:nth-child(3),tbody td:nth-child(3){display:none;}
+}
+</style>
+</head>
+<body>
+
+<div id="notif"></div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-bg" id="modal-delete">
+  <div class="modal">
+    <h3>⚠️ 確認刪除</h3>
+    <p id="modal-delete-desc">確定要刪除此加值密碼？</p>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeModal('modal-delete')">取消</button>
+      <button class="btn btn-danger btn-sm" style="flex:1;padding:11px" onclick="confirmDelete()">確認刪除</button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- LOGIN -->
+  <div class="screen active" id="screen-login">
+    <div class="login-box">
+      <div class="login-logo">
+        <div class="icon">🛡️</div>
+        <h1>ADMIN PANEL</h1>
+        <p>24HR MISSION · 後台管理</p>
+      </div>
+      <div class="field">
+        <label>管理員密碼</label>
+        <input type="password" id="admin-pw" placeholder="輸入密碼" />
+      </div>
+      <button class="btn btn-gold" onclick="doAdminLogin()">進入後台</button>
+      <div class="err-msg" id="login-err"></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="screen" id="screen-main">
+    <div class="topbar">
+      <div class="topbar-title">⚡ ADMIN PANEL</div>
+      <div class="topbar-right">
+        <div class="admin-badge">ADMIN</div>
+        <button class="btn-logout-top" onclick="doLogout()">登出</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- Stats -->
+      <div class="stats-row" id="stats-row">
+        <div class="stat-card">
+          <div class="stat-num" id="stat-total">-</div>
+          <div class="stat-label">總用戶數</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-credits">-</div>
+          <div class="stat-label">總剩餘次數</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-missions">-</div>
+          <div class="stat-label">總任務數</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('users')">用戶管理</button>
+        <button class="tab-btn" onclick="switchTab('promos')">加值密碼</button>
+      </div>
+
+      <!-- Users Tab -->
+      <div class="tab-pane active" id="tab-users">
+        <div class="section-header">
+          <div class="section-title">用戶列表</div>
+          <input class="search-input" id="user-search" placeholder="搜尋名字或電話" oninput="filterUsers()" />
+        </div>
+        <div id="users-wrap">
+          <div class="loading"><div class="spinner"></div>載入中...</div>
+        </div>
+      </div>
+
+      <!-- Promos Tab -->
+      <div class="tab-pane" id="tab-promos">
+        <div class="section-header">
+          <div class="section-title">加值密碼</div>
+          <button class="btn btn-ice btn-sm" onclick="refreshPromos()">重新整理</button>
+        </div>
+        <div class="promo-grid" id="promos-wrap">
+          <div class="loading"><div class="spinner"></div>載入中...</div>
+        </div>
+
+        <!-- Add new promo -->
+        <div class="add-promo-card">
+          <h3>＋ 新增加值密碼</h3>
+          <div class="form-row">
+            <div class="field">
+              <label>密碼</label>
+              <input type="text" id="new-code" placeholder="例：MISSION2024" />
+            </div>
+            <div class="field">
+              <label>加值次數</label>
+              <input type="number" id="new-credits" value="1" min="1" max="99" />
+            </div>
+            <div class="field">
+              <label>最大使用人數</label>
+              <input type="number" id="new-max" value="100" min="1" />
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <button class="btn btn-gold btn-sm" style="padding:10px 24px" onclick="addPromo()">新增密碼</button>
+          </div>
+          <div class="err-msg" id="promo-msg"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SB_URL = 'https://hhcubvixldieuwdeqnwc.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhoY3Vidml4bGRpZXV3ZGVxbndjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1NjcyNDYsImV4cCI6MjA5MTE0MzI0Nn0.zkWxfm0FugSEL9zW6pwDFWPqmRJ3ystOZfU8yRL2lPo';
+const ADMIN_PW = 'Q12diamond';
+
+let allUsers = [];
+let deleteTargetId = null;
+let deleteTargetType = null;
+
+// ── AUTH ──
+function doAdminLogin() {
+  const pw = document.getElementById('admin-pw').value;
+  if (pw === ADMIN_PW) {
+    showScreen('main');
+    loadAll();
+  } else {
+    document.getElementById('login-err').textContent = '密碼錯誤';
+    sfxError();
+  }
+}
+
+function doLogout() {
+  showScreen('login');
+  document.getElementById('admin-pw').value = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('screen-login').classList.contains('active')) doAdminLogin();
+  if (e.key === 'Escape') document.querySelectorAll('.modal-bg.show').forEach(m => m.classList.remove('show'));
+});
+
+// ── UI ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', ['users','promos'][i] === name));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'promos') loadPromos();
+}
+
+function notify(msg, ok = true) {
+  const el = document.getElementById('notif');
+  el.textContent = msg;
+  el.style.borderColor = ok ? 'var(--gold)' : 'var(--danger)';
+  el.style.color = ok ? 'var(--gold)' : 'var(--danger)';
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+function setMsg(id, msg, ok = false) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'err-msg' + (ok ? ' ok-msg' : '');
+}
+
+// ── AUDIO ──
+let actx = null;
+function tone(f,d,t='sine',g=0.1){
+  try{
+    if(!actx) actx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(),gn=actx.createGain();
+    o.connect(gn);gn.connect(actx.destination);
+    o.type=t;o.frequency.value=f;
+    gn.gain.setValueAtTime(g,actx.currentTime);
+    gn.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);
+    o.start();o.stop(actx.currentTime+d);
+  }catch(e){}
+}
+function sfxOk()    { tone(880,.1); setTimeout(()=>tone(1100,.15),100); }
+function sfxError() { tone(200,.3,'sawtooth',.08); }
+
+// ── SUPABASE ──
+async function sbFetch(path, opts = {}) {
+  const res = await fetch(SB_URL + '/rest/v1/' + path, {
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || 'return=representation',
+      ...opts.headers
+    },
+    method: opts.method || 'GET',
+    body: opts.body ? JSON.stringify(opts.body) : undefined
+  });
+  if (res.status === 204) return null;
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || data.error || 'Request failed');
+  return data;
+}
+
+// ── LOAD ALL ──
+async function loadAll() {
+  await Promise.all([loadUsers(), loadPromos(), loadStats()]);
+}
+
+async function loadStats() {
+  try {
+    const [users, missions] = await Promise.all([
+      sbFetch('h24_users?select=credits'),
+      sbFetch('h24_missions?select=id')
+    ]);
+    document.getElementById('stat-total').textContent = users?.length || 0;
+    document.getElementById('stat-credits').textContent = users?.reduce((s, u) => s + (u.credits || 0), 0) || 0;
+    document.getElementById('stat-missions').textContent = missions?.length || 0;
+  } catch(e) {}
+}
+
+// ── USERS ──
+async function loadUsers() {
+  document.getElementById('users-wrap').innerHTML = '<div class="loading"><div class="spinner"></div>載入中...</div>';
+  try {
+    allUsers = await sbFetch('h24_users?order=created_at.desc') || [];
+    renderUsers(allUsers);
+  } catch(e) {
+    document.getElementById('users-wrap').innerHTML = '<div class="empty">載入失敗：' + e.message + '</div>';
+  }
+}
+
+function filterUsers() {
+  const q = document.getElementById('user-search').value.toLowerCase();
+  const filtered = allUsers.filter(u =>
+    u.name.toLowerCase().includes(q) || u.phone.includes(q)
+  );
+  renderUsers(filtered);
+}
+
+function renderUsers(users) {
+  if (!users.length) {
+    document.getElementById('users-wrap').innerHTML = '<div class="empty">沒有用戶資料</div>';
+    return;
+  }
+  document.getElementById('users-wrap').innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>用戶</th>
+            <th>電話</th>
+            <th>加入時間</th>
+            <th>剩餘次數</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${users.map(u => `
+            <tr id="row-${u.id}">
+              <td class="td-name">${u.name}</td>
+              <td class="td-phone">${u.phone}</td>
+              <td class="td-date">${formatDate(u.created_at)}</td>
+              <td class="td-credits" id="credits-display-${u.id}">${u.credits || 0}</td>
+              <td class="td-actions">
+                <button class="btn btn-ice btn-sm" onclick="startEditCredits(${u.id}, ${u.credits||0})">修改次數</button>
+              </td>
+            </tr>
+            <tr id="edit-row-${u.id}" style="display:none">
+              <td colspan="5" style="padding:10px 16px;background:rgba(79,195,247,0.04);">
+                <div class="credits-edit">
+                  <span style="font-size:12px;color:var(--muted);margin-right:4px;">新次數：</span>
+                  <input class="credits-input" id="credits-input-${u.id}" type="number" min="0" max="999" value="${u.credits||0}" />
+                  <button class="btn btn-gold btn-sm" onclick="saveCredits(${u.id})">儲存</button>
+                  <button class="btn btn-ghost btn-sm" onclick="cancelEdit(${u.id})">取消</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function startEditCredits(id, current) {
+  document.getElementById('edit-row-' + id).style.display = 'table-row';
+  document.getElementById('credits-input-' + id).focus();
+}
+
+function cancelEdit(id) {
+  document.getElementById('edit-row-' + id).style.display = 'none';
+}
+
+async function saveCredits(id) {
+  const val = parseInt(document.getElementById('credits-input-' + id).value);
+  if (isNaN(val) || val < 0) { notify('請輸入有效數字', false); return; }
+  try {
+    await sbFetch(`h24_users?id=eq.${id}`, {
+      method: 'PATCH',
+      body: { credits: val },
+      prefer: 'return=minimal'
+    });
+    // Update local
+    const u = allUsers.find(u => u.id === id);
+    if (u) u.credits = val;
+    document.getElementById('credits-display-' + id).textContent = val;
+    document.getElementById('edit-row-' + id).style.display = 'none';
+    notify('✅ 次數已更新');
+    sfxOk();
+    loadStats();
+  } catch(e) {
+    notify('更新失敗：' + e.message, false);
+    sfxError();
+  }
+}
+
+// ── PROMOS ──
+async function loadPromos() {
+  document.getElementById('promos-wrap').innerHTML = '<div class="loading"><div class="spinner"></div>載入中...</div>';
+  try {
+    const promos = await sbFetch('h24_promo_codes?order=created_at.desc') || [];
+    renderPromos(promos);
+  } catch(e) {
+    document.getElementById('promos-wrap').innerHTML = '<div class="empty">載入失敗：' + e.message + '</div>';
+  }
+}
+
+function refreshPromos() { loadPromos(); }
+
+function renderPromos(promos) {
+  if (!promos.length) {
+    document.getElementById('promos-wrap').innerHTML = '<div class="empty">尚無加值密碼</div>';
+    return;
+  }
+  document.getElementById('promos-wrap').innerHTML = promos.map(p => `
+    <div class="promo-card">
+      <div class="promo-code">🔑 ${p.code}</div>
+      <div class="promo-meta">
+        <div class="promo-meta-item">
+          <div class="promo-meta-num" style="color:var(--gold)">${p.credits_to_add}</div>
+          <div class="promo-meta-label">加值次數</div>
+        </div>
+        <div class="promo-meta-item">
+          <div class="promo-meta-num">${p.used_count}</div>
+          <div class="promo-meta-label">已使用人數</div>
+        </div>
+        <div class="promo-meta-item">
+          <div class="promo-meta-num">${p.max_uses}</div>
+          <div class="promo-meta-label">最大人數</div>
+        </div>
+        <div class="promo-meta-item">
+          <div class="promo-meta-num" style="color:${p.max_uses - p.used_count > 0 ? 'var(--success)' : 'var(--danger)'}">
+            ${p.max_uses - p.used_count}
+          </div>
+          <div class="promo-meta-label">剩餘名額</div>
+        </div>
+      </div>
+      <div class="promo-actions">
+        <button class="btn btn-danger btn-sm" onclick="promptDelete(${p.id}, 'promo', '${p.code}')">刪除</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function addPromo() {
+  const code    = document.getElementById('new-code').value.trim().toUpperCase();
+  const credits = parseInt(document.getElementById('new-credits').value);
+  const maxUses = parseInt(document.getElementById('new-max').value);
+  setMsg('promo-msg', '');
+
+  if (!code) { setMsg('promo-msg', '請輸入密碼'); return; }
+  if (isNaN(credits) || credits < 1) { setMsg('promo-msg', '加值次數至少1'); return; }
+  if (isNaN(maxUses) || maxUses < 1) { setMsg('promo-msg', '最大人數至少1'); return; }
+
+  try {
+    await sbFetch('h24_promo_codes', {
+      method: 'POST',
+      body: { code, credits_to_add: credits, max_uses: maxUses, used_count: 0 }
+    });
+    document.getElementById('new-code').value = '';
+    document.getElementById('new-credits').value = '1';
+    document.getElementById('new-max').value = '100';
+    setMsg('promo-msg', '✅ 已新增', true);
+    sfxOk();
+    loadPromos();
+  } catch(e) {
+    setMsg('promo-msg', e.message.includes('unique') ? '此密碼已存在' : '新增失敗：' + e.message);
+    sfxError();
+  }
+}
+
+// ── DELETE ──
+function promptDelete(id, type, label) {
+  deleteTargetId = id;
+  deleteTargetType = type;
+  document.getElementById('modal-delete-desc').textContent = `確定要刪除「${label}」？此操作無法復原。`;
+  document.getElementById('modal-delete').classList.add('show');
+}
+
+async function confirmDelete() {
+  closeModal('modal-delete');
+  try {
+    if (deleteTargetType === 'promo') {
+      // Delete redemptions first
+      await sbFetch(`h24_code_redemptions?code_id=eq.${deleteTargetId}`, {
+        method: 'DELETE', prefer: 'return=minimal'
+      });
+      await sbFetch(`h24_promo_codes?id=eq.${deleteTargetId}`, {
+        method: 'DELETE', prefer: 'return=minimal'
+      });
+      notify('🗑️ 密碼已刪除');
+      sfxOk();
+      loadPromos();
+    }
+  } catch(e) {
+    notify('刪除失敗：' + e.message, false);
+    sfxError();
+  }
+}
+
+// ── UTILS ──
+function formatDate(ts) {
+  if (!ts) return '-';
+  const d = new Date(ts);
+  return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+}
+</script>
+</body>
+</html>
